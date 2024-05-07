@@ -40,6 +40,7 @@ public class Box {
     public Iterator<String> iterator() {
         return new BoxIterator();
     }
+
     public Box(List<String> list1, List<String> list2, List<String> list3, List<String> list4) {
         this.list1 = list1;
         this.list2 = list2;

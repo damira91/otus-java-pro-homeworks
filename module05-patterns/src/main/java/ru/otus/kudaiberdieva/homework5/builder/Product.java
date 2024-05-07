@@ -46,7 +46,8 @@ public class Product {
     public static Builder builder() {
         return new Builder();
     }
-    private Product (Builder builder){
+
+    private Product(Builder builder) {
         id = builder.id;
         title = builder.title;
         description = builder.description;
@@ -70,34 +71,42 @@ public class Product {
         public Product build() {
             return new Product(this);
         }
+
         public Builder id(int id) {
             this.id = id;
-            return  this;
+            return this;
         }
+
         public Builder title(String title) {
             this.title = title;
             return this;
         }
+
         public Builder description(String description) {
             this.description = description;
             return this;
         }
-        public Builder cost( double cost) {
+
+        public Builder cost(double cost) {
             this.cost = cost;
             return this;
         }
+
         public Builder weight(double weight) {
             this.weight = weight;
-            return  this;
+            return this;
         }
+
         public Builder width(int width) {
             this.width = width;
             return this;
         }
+
         public Builder length(int length) {
             this.length = length;
             return this;
         }
+
         public Builder height(int height) {
             this.height = height;
             return this;
