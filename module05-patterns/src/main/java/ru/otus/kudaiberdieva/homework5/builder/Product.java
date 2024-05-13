@@ -2,6 +2,28 @@ package ru.otus.kudaiberdieva.homework5.builder;
 
 public class Product {
     private final int id;
+    private final String title;
+    private final String description;
+    private final double cost;
+    private final double weight;
+    private final int width;
+    private final int length;
+    private final int height;
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    private Product(Builder builder) {
+        id = builder.id;
+        title = builder.title;
+        description = builder.description;
+        cost = builder.cost;
+        weight = builder.weight;
+        width = builder.width;
+        length = builder.length;
+        height = builder.height;
+    }
 
     public int getId() {
         return id;
@@ -33,29 +55,6 @@ public class Product {
 
     public int getHeight() {
         return height;
-    }
-
-    private final String title;
-    private final String description;
-    private final double cost;
-    private final double weight;
-    private final int width;
-    private final int length;
-    private final int height;
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    private Product(Builder builder) {
-        id = builder.id;
-        title = builder.title;
-        description = builder.description;
-        cost = builder.cost;
-        weight = builder.weight;
-        width = builder.width;
-        length = builder.length;
-        height = builder.height;
     }
 
     public static final class Builder {

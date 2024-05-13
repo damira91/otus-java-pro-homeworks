@@ -1,16 +1,22 @@
 package ru.otus.kudaiberdieva.homework5.iterator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class Box {
+public class Box implements Iterable<String>{
     private final List<String> list1;
     private final List<String> list2;
     private final List<String> list3;
     private final List<String> list4;
+    private final Logger logger = LoggerFactory.getLogger(Box.class);
+
 
     private class BoxIterator implements Iterator<String> {
+
         private final Iterator<String> iterator1 = list1.iterator();
         private final Iterator<String> iterator2 = list2.iterator();
         private final Iterator<String> iterator3 = list3.iterator();
@@ -38,6 +44,7 @@ public class Box {
     }
 
     public Iterator<String> iterator() {
+        logger.info("Getting iterator for the box contents");
         return new BoxIterator();
     }
 
