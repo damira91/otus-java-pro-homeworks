@@ -1,2 +1,4 @@
 rootProject.name = 'otus-java-pro-homework'
+include 'module06-patterns2'
+include 'module06-patterns2'
 
