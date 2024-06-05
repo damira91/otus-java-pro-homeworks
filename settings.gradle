@@ -1,2 +1,4 @@
 rootProject.name = 'otus-java-pro-homework'
+include 'module07-JDBC'
+include 'module07-java_database_interaction'
 

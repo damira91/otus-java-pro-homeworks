@@ -1,0 +1,328 @@
+2024-06-04 08:55:22 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Объект уже закрыт
+The object is already closed [90007-214]
+2024-06-04 09:02:36 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Объект уже закрыт
+The object is already closed [90007-214]
+2024-06-04 09:19:20 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Объект уже закрыт
+The object is already closed [90007-214]
+2024-06-04 09:20:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Объект уже закрыт
+The object is already closed [90007-214]
+2024-06-04 09:20:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Объект уже закрыт
+The object is already closed [90007-214]
+2024-06-04 09:33:19 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Объект уже закрыт
+The object is already closed [90007-214]
+2024-06-04 09:39:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Объект уже закрыт
+The object is already closed [90007-214]
+2024-06-04 10:14:49 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Объект уже закрыт
+The object is already closed [90007-214]
+2024-06-04 10:29:05 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Объект уже закрыт
+The object is already closed [90007-214]
+2024-06-04 10:59:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "accountType" не найден
+Column "accountType" not found [42122-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3492)
+	at org.h2.jdbc.JdbcResultSet.getObject(JdbcResultSet.java:562)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.extractEntity(AbstractRepository.java:122)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.findAll(AbstractRepository.java:137)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:45)
+2024-06-04 11:03:36 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "ACCOUNT_TYPE" не найден
+Column "ACCOUNT_TYPE" not found; SQL statement:
+insert into accounts (amount, account_type, status) values (?, ?, ?); [42122-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:749)
+	at org.h2.command.Parser.parseColumn(Parser.java:1256)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1241)
+	at org.h2.command.Parser.parseInsert(Parser.java:1641)
+	at org.h2.command.Parser.parsePrepared(Parser.java:814)
+	at org.h2.command.Parser.parse(Parser.java:689)
+	at org.h2.command.Parser.parse(Parser.java:661)
+	at org.h2.command.Parser.prepareCommand(Parser.java:569)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:631)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:554)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:92)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:288)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.prepare(AbstractRepository.java:84)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.<init>(AbstractRepository.java:29)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:41)
+2024-06-04 11:10:34 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "accountType" не найден
+Column "accountType" not found [42122-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3492)
+	at org.h2.jdbc.JdbcResultSet.getObject(JdbcResultSet.java:562)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.extractEntity(AbstractRepository.java:122)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.findAll(AbstractRepository.java:137)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:45)
+2024-06-04 11:10:56 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "accountType" не найден
+Column "accountType" not found [42122-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3492)
+	at org.h2.jdbc.JdbcResultSet.getObject(JdbcResultSet.java:562)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.extractEntity(AbstractRepository.java:122)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.findAll(AbstractRepository.java:137)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:45)
+2024-06-04 11:11:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "accountType" не найден
+Column "accountType" not found [42122-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3492)
+	at org.h2.jdbc.JdbcResultSet.getObject(JdbcResultSet.java:562)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.extractEntity(AbstractRepository.java:122)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.findAll(AbstractRepository.java:137)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:45)
+2024-06-04 11:19:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "accountType" не найден
+Column "accountType" not found [42122-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3492)
+	at org.h2.jdbc.JdbcResultSet.getObject(JdbcResultSet.java:562)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.extractEntity(AbstractRepository.java:122)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.findAll(AbstractRepository.java:137)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:45)
+2024-06-04 11:22:20 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "accountType" не найден
+Column "accountType" not found [42122-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3492)
+	at org.h2.jdbc.JdbcResultSet.getObject(JdbcResultSet.java:562)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.extractEntity(AbstractRepository.java:122)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.findAll(AbstractRepository.java:137)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:45)
+2024-06-04 11:24:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "ACCOUNTTYPE" не найден
+Column "ACCOUNTTYPE" not found; SQL statement:
+insert into accounts (amount, accountType, status) values (?, ?, ?); [42122-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:749)
+	at org.h2.command.Parser.parseColumn(Parser.java:1256)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1241)
+	at org.h2.command.Parser.parseInsert(Parser.java:1641)
+	at org.h2.command.Parser.parsePrepared(Parser.java:814)
+	at org.h2.command.Parser.parse(Parser.java:689)
+	at org.h2.command.Parser.parse(Parser.java:661)
+	at org.h2.command.Parser.prepareCommand(Parser.java:569)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:631)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:554)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:92)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:288)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.prepare(AbstractRepository.java:84)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.<init>(AbstractRepository.java:29)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:41)
+2024-06-04 11:24:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "ACCOUNTTYPE" не найден
+Column "ACCOUNTTYPE" not found; SQL statement:
+insert into accounts (amount, accounttype, status) values (?, ?, ?); [42122-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:749)
+	at org.h2.command.Parser.parseColumn(Parser.java:1256)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1241)
+	at org.h2.command.Parser.parseInsert(Parser.java:1641)
+	at org.h2.command.Parser.parsePrepared(Parser.java:814)
+	at org.h2.command.Parser.parse(Parser.java:689)
+	at org.h2.command.Parser.parse(Parser.java:661)
+	at org.h2.command.Parser.prepareCommand(Parser.java:569)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:631)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:554)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:92)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:288)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.prepare(AbstractRepository.java:84)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.<init>(AbstractRepository.java:29)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:41)
+2024-06-04 11:26:07 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "accountType" не найден
+Column "accountType" not found [42122-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3492)
+	at org.h2.jdbc.JdbcResultSet.getObject(JdbcResultSet.java:562)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.extractEntity(AbstractRepository.java:122)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.findAll(AbstractRepository.java:137)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:45)
+2024-06-04 11:33:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "acctype" не найден
+Column "acctype" not found [42122-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3492)
+	at org.h2.jdbc.JdbcResultSet.getObject(JdbcResultSet.java:562)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.extractEntity(AbstractRepository.java:122)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.findAll(AbstractRepository.java:137)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:45)
+2024-06-04 11:34:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "ACCTYPE" не найден
+Column "ACCTYPE" not found; SQL statement:
+insert into accounts (amount, acctype, status) values (?, ?, ?); [42122-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:749)
+	at org.h2.command.Parser.parseColumn(Parser.java:1256)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1241)
+	at org.h2.command.Parser.parseInsert(Parser.java:1641)
+	at org.h2.command.Parser.parsePrepared(Parser.java:814)
+	at org.h2.command.Parser.parse(Parser.java:689)
+	at org.h2.command.Parser.parse(Parser.java:661)
+	at org.h2.command.Parser.prepareCommand(Parser.java:569)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:631)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:554)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:92)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:288)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.prepare(AbstractRepository.java:84)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.<init>(AbstractRepository.java:29)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:41)
+2024-06-04 11:41:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Столбец "ACCTYPE" не найден
+Column "ACCTYPE" not found; SQL statement:
+insert into accounts (amount, acctype, status) values (?, ?, ?); [42122-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:502)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:749)
+	at org.h2.command.Parser.parseColumn(Parser.java:1256)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1241)
+	at org.h2.command.Parser.parseInsert(Parser.java:1641)
+	at org.h2.command.Parser.parsePrepared(Parser.java:814)
+	at org.h2.command.Parser.parse(Parser.java:689)
+	at org.h2.command.Parser.parse(Parser.java:661)
+	at org.h2.command.Parser.prepareCommand(Parser.java:569)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:631)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:554)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:92)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:288)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.prepare(AbstractRepository.java:84)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.<init>(AbstractRepository.java:29)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:41)
+2024-06-04 12:01:40 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "CREATE TABLE if NOT EXISTS products (\000a                         id BIGSERIAL PRIMARY KEY,\000a                         title VARCHAR(255) NOT NULL,\000a                         price  int[*](100)\000a);\000a\000a"; ожидалось "ARRAY, INVISIBLE, VISIBLE, NOT NULL, NULL, AS, DEFAULT, GENERATED, ON UPDATE, NOT NULL, NULL, DEFAULT ON NULL, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY KEY, UNIQUE, NOT NULL, NULL, CHECK, REFERENCES, ,, )"
+Syntax error in SQL statement "CREATE TABLE if NOT EXISTS products (\000a                         id BIGSERIAL PRIMARY KEY,\000a                         title VARCHAR(255) NOT NULL,\000a                         price  int[*](100)\000a);\000a\000a"; expected "ARRAY, INVISIBLE, VISIBLE, NOT NULL, NULL, AS, DEFAULT, GENERATED, ON UPDATE, NOT NULL, NULL, DEFAULT ON NULL, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY KEY, UNIQUE, NOT NULL, NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE if NOT EXISTS products (
+                         id BIGSERIAL PRIMARY KEY,
+                         title VARCHAR(255) NOT NULL,
+                         price  int(100)
+);
+
+ [42001-214]
+2024-06-04 15:10:11 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "UPDATE users SET login[*], password, nickname WHERE id = ?"; ожидалось "., ="
+Syntax error in SQL statement "UPDATE users SET login[*], password, nickname WHERE id = ?"; expected "., ="; SQL statement:
+UPDATE users SET login, password, nickname WHERE id = ? [42001-214]
+2024-06-04 15:10:50 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "UPDATE users SET login[*], password, nickname WHERE id = ?"; ожидалось "., ="
+Syntax error in SQL statement "UPDATE users SET login[*], password, nickname WHERE id = ?"; expected "., ="; SQL statement:
+UPDATE users SET login, password, nickname WHERE id = ? [42001-214]
+2024-06-04 15:37:13 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "UPDATE users SET login[*], password, nickname WHERE id = ?"; ожидалось "., ="
+Syntax error in SQL statement "UPDATE users SET login[*], password, nickname WHERE id = ?"; expected "., ="; SQL statement:
+UPDATE users SET login, password, nickname WHERE id = ? [42001-214]
+2024-06-04 15:57:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "UPDATE users SET login[*], password, nickname WHERE id = ?"; ожидалось "., ="
+Syntax error in SQL statement "UPDATE users SET login[*], password, nickname WHERE id = ?"; expected "., ="; SQL statement:
+UPDATE users SET login, password, nickname WHERE id = ? [42001-214]
+2024-06-04 16:02:01 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "UPDATE users SET login[*], password, nickname WHERE id = ?"; ожидалось "., ="
+Syntax error in SQL statement "UPDATE users SET login[*], password, nickname WHERE id = ?"; expected "., ="; SQL statement:
+UPDATE users SET login, password, nickname WHERE id = ? [42001-214]
+2024-06-04 16:06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "UPDATE users SET login[*], password, nickname WHERE id = ?"; ожидалось "., ="
+Syntax error in SQL statement "UPDATE users SET login[*], password, nickname WHERE id = ?"; expected "., ="; SQL statement:
+UPDATE users SET login, password, nickname WHERE id = ? [42001-214]
+2024-06-05 07:31:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Ошибка сериализации, причина: "java.io.NotSerializableException: java.lang.reflect.Method"
+Serialization failed, cause: "java.io.NotSerializableException: java.lang.reflect.Method" [90026-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:646)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.util.JdbcUtils.serialize(JdbcUtils.java:391)
+	at org.h2.value.ValueToObjectConverter.otherToValue(ValueToObjectConverter.java:201)
+	at org.h2.value.ValueToObjectConverter.objectToValue(ValueToObjectConverter.java:150)
+	at org.h2.jdbc.JdbcPreparedStatement.setObject(JdbcPreparedStatement.java:496)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.update(AbstractRepository.java:106)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:31)
+Caused by: java.io.NotSerializableException: java.lang.reflect.Method
+	at java.base/java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1200)
+	at java.base/java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:358)
+	at org.h2.util.JdbcUtils.serialize(JdbcUtils.java:388)
+	... 5 more
+2024-06-05 07:40:06 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Ошибка сериализации, причина: "java.io.NotSerializableException: java.lang.reflect.Method"
+Serialization failed, cause: "java.io.NotSerializableException: java.lang.reflect.Method" [90026-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:646)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.util.JdbcUtils.serialize(JdbcUtils.java:391)
+	at org.h2.value.ValueToObjectConverter.otherToValue(ValueToObjectConverter.java:201)
+	at org.h2.value.ValueToObjectConverter.objectToValue(ValueToObjectConverter.java:150)
+	at org.h2.jdbc.JdbcPreparedStatement.setObject(JdbcPreparedStatement.java:496)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.update(AbstractRepository.java:106)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:31)
+Caused by: java.io.NotSerializableException: java.lang.reflect.Method
+	at java.base/java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1200)
+	at java.base/java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:358)
+	at org.h2.util.JdbcUtils.serialize(JdbcUtils.java:388)
+	... 5 more
+2024-06-05 07:40:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Ошибка сериализации, причина: "java.io.NotSerializableException: java.lang.reflect.Method"
+Serialization failed, cause: "java.io.NotSerializableException: java.lang.reflect.Method" [90026-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:646)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.util.JdbcUtils.serialize(JdbcUtils.java:391)
+	at org.h2.value.ValueToObjectConverter.otherToValue(ValueToObjectConverter.java:201)
+	at org.h2.value.ValueToObjectConverter.objectToValue(ValueToObjectConverter.java:150)
+	at org.h2.jdbc.JdbcPreparedStatement.setObject(JdbcPreparedStatement.java:496)
+	at ru.otus.kudaiberdieva.homework07.repositories.AbstractRepository.update(AbstractRepository.java:106)
+	at ru.otus.kudaiberdieva.homework07.Application.main(Application.java:31)
+Caused by: java.io.NotSerializableException: java.lang.reflect.Method
+	at java.base/java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1200)
+	at java.base/java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:358)
+	at org.h2.util.JdbcUtils.serialize(JdbcUtils.java:388)
+	... 5 more
