@@ -1,5 +1,6 @@
 package ru.otus.kudaiberdieva.homework07.database;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
@@ -11,14 +12,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.slf4j.Logger;
-
-
-public class DBMigrator {
-    private static final Logger log = LoggerFactory.getLogger(DBMigrator.class);
+public class DataBaseMigrator {
+    private static final Logger log = LoggerFactory.getLogger(DataBaseMigrator.class);
     private DataSource dataSource;
 
-    public DBMigrator(DataSource dataSource) {
+    public DataBaseMigrator(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 

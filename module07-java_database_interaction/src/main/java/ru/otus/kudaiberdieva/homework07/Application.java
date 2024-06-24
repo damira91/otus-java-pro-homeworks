@@ -1,6 +1,6 @@
 package ru.otus.kudaiberdieva.homework07;
 
-import ru.otus.kudaiberdieva.homework07.database.DBMigrator;
+import ru.otus.kudaiberdieva.homework07.database.DataBaseMigrator;
 import ru.otus.kudaiberdieva.homework07.database.DataSource;
 import ru.otus.kudaiberdieva.homework07.entity.Account;
 import ru.otus.kudaiberdieva.homework07.entity.User;
@@ -15,7 +15,7 @@ public class Application {
             dataSource = new DataSource("jdbc:h2:file:./db;MODE=PostgreSQL");
             dataSource.connect();
 
-            DBMigrator dbMigrator = new DBMigrator(dataSource);
+            DataBaseMigrator dbMigrator = new DataBaseMigrator(dataSource);
             dbMigrator.migrate("init.sql");
 
             AbstractRepository<User> userRepository = new AbstractRepository<>(dataSource, User.class);

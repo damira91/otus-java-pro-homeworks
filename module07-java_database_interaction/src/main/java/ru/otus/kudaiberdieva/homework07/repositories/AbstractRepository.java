@@ -1,13 +1,14 @@
 package ru.otus.kudaiberdieva.homework07.repositories;
 
-import ru.otus.kudaiberdieva.homework07.annotations.RepositoryColumn;
+import ru.otus.kudaiberdieva.homework07.exceptions.RepositoryOperationException;
 import ru.otus.kudaiberdieva.homework07.annotations.RepositoryField;
 import ru.otus.kudaiberdieva.homework07.annotations.RepositoryIdField;
 import ru.otus.kudaiberdieva.homework07.annotations.RepositoryTable;
-import ru.otus.kudaiberdieva.homework07.database.DataSource;
 import ru.otus.kudaiberdieva.homework07.exceptions.EntityException;
-import ru.otus.kudaiberdieva.homework07.exceptions.RepositoryException;
+import ru.otus.kudaiberdieva.homework07.repositories.entityMetaInfo.EntityField;
+import ru.otus.kudaiberdieva.homework07.repositories.entityMetaInfo.EntityMetaInfo;
 
+import javax.sql.DataSource;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,69 +17,53 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 public class AbstractRepository<T> {
-    private DataSource dataSource;
-    private Map<String, Method> fieldGetterCash = new HashMap<>();
-    private Map<String, Method> fieldSetterCash = new HashMap<>();
-    private PreparedStatement psCreate;
+
+    private final DataSource dataSource;
+    private final Class<T> cls;
+    private final String tableName;
+    private EntityMetaInfo entityMetaInfo;
+
     private PreparedStatement psFindAll;
     private PreparedStatement psFindById;
+    private PreparedStatement psCreate;
     private PreparedStatement psUpdate;
-    private PreparedStatement psDeleteById;
     private PreparedStatement psDeleteAll;
-    private List<Field> allFields;
-    private List<Field> fieldsWithNoId;
-    private Field idField;
-    private Class<T> cls;
-    String tableName;
-
+    private PreparedStatement psDeleteById;
 
     public AbstractRepository(DataSource dataSource, Class<T> cls) {
         this.dataSource = dataSource;
         this.cls = cls;
         this.tableName = cls.getAnnotation(RepositoryTable.class).title();
-        prepare(cls);
+        prepareRepository(cls);
     }
 
-    private void prepare(Class<T> cls) {
-        fieldsWithNoId = Arrays.stream(cls.getDeclaredFields())
-                .filter(f -> f.isAnnotationPresent(RepositoryField.class))
-                .filter(f -> !f.isAnnotationPresent(RepositoryIdField.class))
-                .collect(Collectors.toList());
-        if (fieldsWithNoId.isEmpty()) {
-            throw new RepositoryException("Entity has only identification field");
+    private void prepareRepository(Class<T> cls) {
+        try {
+            cls.getConstructor();
+        } catch (NoSuchMethodException e) {
+            throw new RepositoryOperationException(String.format("Entity has no default constructor"));
         }
-        allFields = Arrays.stream(cls.getDeclaredFields()).collect(Collectors.toList());
-        idField = Arrays.stream(cls.getDeclaredFields())
-                .filter(f -> f.isAnnotationPresent(RepositoryIdField.class))
-                .findFirst().orElseThrow(() -> new RepositoryException("Entity has no necessary identification"));
-        fieldGetterCash = allFields.stream().collect(Collectors.toMap(Field::getName, (field) -> {
-            String fieldName = field.getName();
-            try {
-                return cls.getMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1));
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }));
-        if (fieldGetterCash.size() != allFields.size()) {
-            throw new RepositoryException("The quantity of entity's fields and getter methods are not equal");
-        }
-        fieldSetterCash = allFields.stream().collect(Collectors.toMap(Field::getName, (field) -> {
-            String fieldName = field.getName();
-            try {
-                return cls.getMethod("set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1), field.getType());
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }));
 
-        if (fieldSetterCash.size() != allFields.size()) {
-            throw new RepositoryException("The quantity of entity's fields and setter methods are not equal");
+        List<EntityField> entityFieldsWithNoId = Arrays.stream(cls.getDeclaredFields())
+                .filter(f -> !f.isAnnotationPresent(RepositoryIdField.class))
+                .filter(f -> f.isAnnotationPresent(RepositoryField.class))
+                .map(this::createEntityField).toList();
+
+        if (entityFieldsWithNoId.isEmpty()) {
+            throw new RepositoryOperationException(String.format("Entity has no other fields but identifier"));
         }
+
+        Field idField = Arrays.stream(cls.getDeclaredFields())
+                .filter(f -> f.isAnnotationPresent(RepositoryIdField.class))
+                .findFirst().orElseThrow(() -> new RepositoryOperationException(String.format("Entity has no necessary identifier")));
+
+        EntityField entityFieldWithId = createEntityField(idField);
+
+        entityMetaInfo = new EntityMetaInfo(entityFieldWithId, entityFieldsWithNoId);
+
         prepareStatementCreate();
         prepareStatementFindById();
         prepareStatementFindAll();
@@ -87,38 +72,54 @@ public class AbstractRepository<T> {
         prepareStatementDeleteAll();
     }
 
+
+    private EntityField createEntityField(Field field) {
+        String fieldName = field.getName();
+        Method getter;
+        Method setter;
+        try {
+            getter = cls.getMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1));
+        } catch (NoSuchMethodException e) {
+            throw new RepositoryOperationException(String.format("There is no getter for field %s", fieldName));
+        }
+        try {
+            setter = cls.getMethod("set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1), field.getType());
+        } catch (NoSuchMethodException e) {
+            throw new RepositoryOperationException(String.format("There is no setter for field %s", fieldName));
+        }
+        return new EntityField(field, getter, setter);
+    }
+
     public void create(T entity) {
         try {
-            for (int i = 0; i < fieldsWithNoId.size(); i++) {
-                Field field = fieldsWithNoId.get(i);
-                psCreate.setObject(i + 1, fieldGetterCash.get(field.getName()).invoke(entity));
+            int i = 1;
+            for (EntityField field : entityMetaInfo.getFields()) {
+                try {
+                    psCreate.setObject(i++, field.getGetter().invoke(entity));
+                } catch (SQLException | IllegalAccessException | InvocationTargetException e) {
+                    throw new EntityException(String.format("Error setting field value for field %s: %s", field.getField().getName(), e.getMessage()), e);
+                }
             }
             psCreate.executeUpdate();
         } catch (Exception e) {
-            throw new RuntimeException(e.getCause());
+            throw new EntityException(String.format("Error creating entity %s: %s", cls.getName(), e.getMessage()), e);
         }
     }
 
     public void update(T entity) {
         try {
-            if (psUpdate == null) {
-                prepareStatementUpdate();
+            int i = 1;
+            for (EntityField field : entityMetaInfo.getFields()) {
+                try {
+                    psUpdate.setObject(i++, field.getGetter().invoke(entity));
+                } catch (SQLException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
             }
-
-            int index = 1;
-            for (Field field : fieldsWithNoId) {
-                Method getter = fieldGetterCash.get(field.getName());
-                Object value = getter.invoke(entity);
-                psUpdate.setObject(index++, value);
-            }
-
-            Method idGetter = fieldGetterCash.get(idField.getName());
-            Object idValue = idGetter.invoke(entity);
-            psUpdate.setObject(index, idValue);
-
+            psUpdate.setObject(i, entityMetaInfo.getIdField().getGetter().invoke(entity));
             psUpdate.executeUpdate();
         } catch (Exception e) {
-            throw new RuntimeException("Error updating entity: " + e.getMessage(), e);
+            throw new EntityException(String.format("Failed to update " + cls.getName()), e.getCause());
         }
     }
 
@@ -127,7 +128,7 @@ public class AbstractRepository<T> {
             psDeleteById.setLong(1, id);
             psDeleteById.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e.getCause());
+            throw new EntityException(String.format("Error deleting entity by id: %s", cls.getName(), id), e.getCause());
         }
     }
 
@@ -135,7 +136,7 @@ public class AbstractRepository<T> {
         try {
             psDeleteAll.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new EntityException(String.format("Error deleting all %s from table : ", cls.getName()), e.getCause());
         }
     }
 
@@ -146,19 +147,15 @@ public class AbstractRepository<T> {
 
             while (resultSet.next()) {
                 T newObject = cls.getConstructor().newInstance();
-                allFields.forEach(field -> {
-                    try {
-                        Method method = fieldSetterCash.get(field.getName());
-                        method.invoke(newObject, resultSet.getObject(field.getName(), field.getType()));
-                    } catch (IllegalAccessException | InvocationTargetException | SQLException e) {
-                        e.printStackTrace();
-                    }
+                setField(newObject, entityMetaInfo.getIdField(), resultSet);
+                entityMetaInfo.getFields().forEach(field -> {
+                    setField(newObject, field, resultSet);
                 });
                 out.add(newObject);
             }
             return out;
         } catch (SQLException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e.getCause());
+            throw new RepositoryOperationException(String.format("Error finding all %s ", cls.getName()) + e.getCause());
         }
     }
 
@@ -166,93 +163,64 @@ public class AbstractRepository<T> {
         try {
             psFindById.setLong(1, id);
             ResultSet resultSet = psFindById.executeQuery();
+
             T newObject = cls.getConstructor().newInstance();
 
             if (resultSet.next()) {
-                allFields.forEach(field -> {
-                    try {
-                        Method method = fieldSetterCash.get(field.getName());
-                        method.invoke(newObject, resultSet.getObject(field.getName(), field.getType()));
-                    } catch (IllegalAccessException | InvocationTargetException | SQLException e) {
-                        e.printStackTrace();
-                    }
+                setField(newObject, entityMetaInfo.getIdField(), resultSet);
+                entityMetaInfo.getFields().forEach(field -> {
+                    setField(newObject, field, resultSet);
                 });
             } else {
                 throw new EntityException(String.format("Entity not found %s", id));
             }
+
             return newObject;
-        } catch (SQLException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e.getCause());
+        } catch (SQLException | InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            throw new EntityException(String.format("Error finding object by ID s%", id), e);
         }
     }
 
-    private String getColumnName(Field field) {
-        RepositoryColumn columnAnnotation = field.getAnnotation(RepositoryColumn.class);
-
-        if (columnAnnotation == null) {
-            throw new RepositoryException("No RepositoryColumn annotation found on field " + field.getName());
+    private void setField(T newObject, EntityField entityField, ResultSet resultSet) {
+        try {
+            entityField.getSetter().invoke(newObject, resultSet.getObject(entityField.getField().getName(), entityField.getField().getType()));
+        } catch (IllegalAccessException | InvocationTargetException | SQLException e) {
+            throw new EntityException(String.format("Ошибка при установке полей для %s", cls.getName()), e.getCause());
         }
-
-        String columnName = columnAnnotation.name();
-        return columnName.isEmpty() ? field.getName() : columnName;
-    }
-
-    private String getIdFieldName() {
-        return Arrays.stream(cls.getDeclaredFields())
-                .filter(f -> f.isAnnotationPresent(RepositoryIdField.class))
-                .findFirst()
-                .map(this::getColumnName)
-                .orElseThrow(() -> new RuntimeException("No ID field found"));
-    }
-
-    private String getTableName() {
-        RepositoryTable annotation = cls.getAnnotation(RepositoryTable.class);
-        if (annotation == null) {
-            throw new RepositoryException("No RepositoryTable annotation found on class " + cls.getName());
-        }
-        return annotation.title();
     }
 
     private void prepareStatementCreate() {
-        StringBuilder query = new StringBuilder("insert into ");
+        StringBuilder query = new StringBuilder("INSERT INTO ");
         query.append(tableName).append(" (");
 
-        for (Field f : fieldsWithNoId) {
-            query.append(f.getName()).append(", ");
-        }
+        entityMetaInfo.getFields().forEach(entityField -> {
+            query.append(entityField.getField().getName()).append(", ");
+        });
         query.setLength(query.length() - 2);
-        query.append(") values (");
-
-        for (Field f : fieldsWithNoId) {
-            query.append("?, ");
-        }
-
+        query.append(") VALUES (");
+        query.append("?, ".repeat(entityMetaInfo.getFields().size()));
         query.setLength(query.length() - 2);
         query.append(");");
         try {
             psCreate = dataSource.getConnection().prepareStatement(query.toString(), Statement.RETURN_GENERATED_KEYS);
         } catch (SQLException e) {
-            throw new RepositoryException("Invalid prepareStatement. Error: " + e.getMessage());
+            throw new RepositoryOperationException("Invalid prepareStatement for create. Error: " + e.getMessage());
         }
     }
 
     private void prepareStatementUpdate() {
-        StringBuilder query = new StringBuilder("UPDATE ");
-        query.append(getTableName()).append(" SET ");
+        StringBuilder query = new StringBuilder(String.format("UPDATE %s SET ", tableName));
 
-        for (Field f : fieldsWithNoId) {
-            query.append(getColumnName(f)).append(" = ?, ");
-        }
-
-        query.setLength(query.length() - 2); // Remove the last comma and space
-
-        query.append(" WHERE ").append(getColumnName(idField)).append(" = ?");
+        entityMetaInfo.getFields().forEach(entityField -> {
+            query.append(entityField.getField().getName()).append(" = ?, ");
+        });
+        query.setLength(query.length() - 2);
+        query.append(String.format(" WHERE %s = ?", entityMetaInfo.getIdField().getField().getName()));
 
         try {
-            System.out.println("Prepared SQL Update Query: " + query.toString()); // Debug output
             psUpdate = dataSource.getConnection().prepareStatement(query.toString());
         } catch (SQLException e) {
-            throw new RuntimeException("Error preparing update statement: " + e.getMessage(), e);
+            throw new RepositoryOperationException("Invalid prepareStatement for update. Error: " + e.getMessage());
         }
     }
 
@@ -260,15 +228,15 @@ public class AbstractRepository<T> {
         try {
             psFindAll = dataSource.getConnection().prepareStatement(String.format("SELECT * FROM %s", tableName));
         } catch (SQLException e) {
-            throw new RepositoryException("Invalid prepareStatement to findAll. Error: " + e.getMessage());
+            throw new RepositoryOperationException("Invalid prepareStatement to findAll. Error: " + e.getMessage());
         }
     }
 
     private void prepareStatementFindById() {
         try {
-            psFindById = dataSource.getConnection().prepareStatement(String.format("SELECT * FROM %s where %s = ?", tableName, idField.getName()));
+            psFindById = dataSource.getConnection().prepareStatement(String.format("SELECT * FROM %s where %s = ?", tableName, entityMetaInfo.getIdField().getField().getName()));
         } catch (SQLException e) {
-            throw new RepositoryException("Invalid prepareStatement to findById  . Error: " + e.getMessage());
+            throw new RepositoryOperationException("Invalid prepareStatement to findById. Error: " + e.getMessage());
         }
     }
 
@@ -282,7 +250,7 @@ public class AbstractRepository<T> {
 
     private void prepareStatementDeleteById() {
         try {
-            psDeleteById = dataSource.getConnection().prepareStatement(String.format("DELETE FROM %s where %s = ?", tableName, idField.getName()));
+            psDeleteById = dataSource.getConnection().prepareStatement(String.format("DELETE FROM %s where %s = ?", tableName, entityMetaInfo.getIdField().getField().getName()));
         } catch (SQLException e) {
             e.printStackTrace();
         }

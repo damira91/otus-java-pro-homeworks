@@ -1,27 +1,23 @@
 package ru.otus.kudaiberdieva.homework07.entity;
 
-import ru.otus.kudaiberdieva.homework07.annotations.RepositoryColumn;
 import ru.otus.kudaiberdieva.homework07.annotations.RepositoryField;
 import ru.otus.kudaiberdieva.homework07.annotations.RepositoryIdField;
 import ru.otus.kudaiberdieva.homework07.annotations.RepositoryTable;
 
 @RepositoryTable(title = "users")
 public class User {
-    @RepositoryIdField
-    @RepositoryField
-    @RepositoryColumn(name = "id")
+    @RepositoryIdField(name = "id")
+    @RepositoryField(name = "")
     private Long id;
 
-    @RepositoryField
-    @RepositoryColumn(name = "login")
+    @RepositoryField(name = "login")
     private String login;
 
-    @RepositoryField
-    @RepositoryColumn(name = "password")
+    @RepositoryField(name = "password")
     private String password;
 
-    @RepositoryField
-    @RepositoryColumn(name = "nickname")
+    @RepositoryField(name = "nickname")
+
     private String nickname;
 
     public Long getId() {

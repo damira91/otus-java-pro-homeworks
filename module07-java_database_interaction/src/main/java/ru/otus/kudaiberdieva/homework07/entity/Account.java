@@ -1,27 +1,22 @@
 package ru.otus.kudaiberdieva.homework07.entity;
 
-import ru.otus.kudaiberdieva.homework07.annotations.RepositoryColumn;
 import ru.otus.kudaiberdieva.homework07.annotations.RepositoryField;
 import ru.otus.kudaiberdieva.homework07.annotations.RepositoryIdField;
 import ru.otus.kudaiberdieva.homework07.annotations.RepositoryTable;
 
 @RepositoryTable(title = "accounts")
 public class Account {
-    @RepositoryIdField
-    @RepositoryField
-    @RepositoryColumn(name = "id")
+    @RepositoryIdField(name = "id")
+    @RepositoryField(name = "")
     private Long id;
 
-    @RepositoryField
-    @RepositoryColumn(name = "amount")
+    @RepositoryField(name = "")
     private Long amount;
 
-    @RepositoryField
-    @RepositoryColumn(name = "tp")
+    @RepositoryField(name = "tp")
     private String tp;
 
-    @RepositoryField
-    @RepositoryColumn(name = "status")
+    @RepositoryField(name = "status")
     private String status;
 
     public Account(Long id, Long amount, String tp, String status) {

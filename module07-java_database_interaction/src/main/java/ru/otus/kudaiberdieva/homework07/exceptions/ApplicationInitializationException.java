@@ -1,12 +1,10 @@
 package ru.otus.kudaiberdieva.homework07.exceptions;
 
-public class ApplicationInitializationException extends RuntimeException {
-    public ApplicationInitializationException(String message) {
-        super(message);
-    }
+import java.sql.SQLException;
 
-    public ApplicationInitializationException(String message, Throwable cause) {
-        super(message, cause);
+public class ApplicationInitializationException extends RuntimeException {
+    public ApplicationInitializationException(String message, SQLException e) {
+        super(message);
     }
 
 }
