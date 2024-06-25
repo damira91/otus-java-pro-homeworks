@@ -8,4 +8,8 @@ import java.io.OutputStream;
 
 public interface RequestProcessor {
     void execute(HttpRequest httpRequest, OutputStream output) throws IOException;
+    default String headerType() {
+        return "/";
+    }
 }
+

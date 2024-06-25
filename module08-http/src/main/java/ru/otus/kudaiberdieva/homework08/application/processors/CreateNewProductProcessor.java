@@ -5,14 +5,13 @@ import ru.otus.kudaiberdieva.homework08.HttpRequest;
 import ru.otus.kudaiberdieva.homework08.application.Item;
 import ru.otus.kudaiberdieva.homework08.application.Storage;
 import ru.otus.kudaiberdieva.homework08.processors.RequestProcessor;
-import ru.otus.kudaiberdieva.homework08.processors.RequestProcessorHeaderType;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 
-public class CreateNewProductProcessor implements RequestProcessor, RequestProcessorHeaderType {
+public class CreateNewProductProcessor implements RequestProcessor {
 
     @Override
     public void execute(HttpRequest httpRequest, OutputStream output) throws IOException {

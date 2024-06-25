@@ -15,10 +15,10 @@ public class HttpServer {
     private Dispatcher dispatcher;
     private ExecutorService executorService;
     private ThreadLocal<byte[]> requestBuffer;
-
     private static final Logger logger = LoggerFactory.getLogger(HttpServer.class.getName());
 
     private static final int DEFAULT_BUFFER_SIZE = 8192;
+
 
     public HttpServer(int port) {
         this.port = port;

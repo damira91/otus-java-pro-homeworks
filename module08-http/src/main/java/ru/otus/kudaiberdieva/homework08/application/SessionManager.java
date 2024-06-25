@@ -11,59 +11,57 @@ import java.util.UUID;
 
 public class SessionManager {
     private static final Logger logger = LoggerFactory.getLogger(SessionManager.class);
-    private static final Long tenMin = (1 * 60 * 1000L); //
+    private static final long TEN_MIN = 10 * 60 * 1000L;
     private static final String SESSIONID = "SESSIONID";
     private static Map<String, Date> sessions;
-    private String cookies;
+    private static SessionManager instance;
     private String sessionId;
+    private String cookies;
 
     static {
         sessions = new HashMap<>();
     }
 
-    public SessionManager(String cookies) {
-        this.cookies = cookies;
-        this.sessionId = getSessionIdFromCookies(this.cookies);
-        setSessionId(this.sessionId);
+    private SessionManager() {
     }
 
-    private void setSessionId(String sessionId) {
-        logger.info("sessionId - {} sessions {}   sessions.containsKey(sessionId) {}", this.sessionId, sessions, sessions.containsKey(this.sessionId));
-        Date sessionIdDate = null;
-        if (this.sessionId == null || !sessions.containsKey(sessionId)) {
-            this.sessionId = UUID.randomUUID().toString();
-            sessions.put(this.sessionId, new Date());
-            logger.info("1sessionId - {} sessions {}   sessions.containsKey(sessionId) {}", this.sessionId, sessions, sessions.containsKey(this.sessionId));
-            return;
+    public static SessionManager getInstance() {
+        if (instance == null) {
+            instance = new SessionManager();
         }
-        sessionIdDate = sessions.get(sessionId);
-        logger.info("2sessionIdDate - {}", sessionIdDate);
-        if (sessionIdDate == null) {
-            sessions.put(sessionId, new Date());
-            logger.info("2sessionId - {}", this.sessionId);
-            return;
-        }
-        logger.info("3TimeOfsessionId - {}", new Date().getTime() - sessionIdDate.getTime());
-        if ((new Date().getTime() - sessionIdDate.getTime()) > tenMin) {
-            logger.info("3sessionIdDate - {}", (new Date().getTime() - sessionIdDate.getTime()));
-            sessions.remove(sessionId);
-            this.sessionId = UUID.randomUUID().toString();
-            sessions.put(this.sessionId, new Date());
-            logger.info("3sessionId - {}", this.sessionId);
-        }
+        return instance;
+    }
+
+    public void setCookies(String cookies) {
+        this.cookies = cookies;
+        this.sessionId = getSessionIdFromCookies(cookies);
     }
 
     public String getSessionId() {
-        logger.info("return sessionId - {}", this.sessionId);
         return this.sessionId;
     }
 
-    private String getSessionIdFromCookies(String cookies) {
-        if (cookies == null) return cookies;
-        int start = cookies.indexOf("SESSIONID") + 10;
-        int stop = cookies.indexOf(" ", start);
+    public String getSessionIdFromCookies(String cookies) {
+        if (cookies == null) return null;
+        int start = cookies.indexOf(SESSIONID) + SESSIONID.length() + 1;
+        int stop = cookies.indexOf(";", start);
         if (stop == -1) stop = cookies.length();
-        logger.info("cookies - {} sessionId - {}", cookies, cookies.substring(start, stop));
-        return cookies.substring(start, stop);
+        String sessionId = cookies.substring(start, stop);
+        setSessionId(sessionId);
+        return sessionId;
+    }
+
+    private void setSessionId(String sessionId) {
+        if (sessionId == null || !sessions.containsKey(sessionId)) {
+            sessionId = UUID.randomUUID().toString();
+            sessions.put(sessionId, new Date());
+        } else {
+            Date sessionIdDate = sessions.get(sessionId);
+            if (new Date().getTime() - sessionIdDate.getTime() > TEN_MIN) {
+                sessions.remove(sessionId);
+                sessionId = UUID.randomUUID().toString();
+                sessions.put(sessionId, new Date());
+            }
+        }
     }
 }

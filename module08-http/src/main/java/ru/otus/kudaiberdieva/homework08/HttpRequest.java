@@ -11,17 +11,17 @@ import java.util.stream.Collectors;
 
 
 public class HttpRequest {
+    private static final Logger logger = LoggerFactory.getLogger(HttpRequest.class);
+    private static final String CRLF = "\r\n";
+    private static final String SESSIONID = "SESSIONID";
+    private final SessionManager sessionManager;
     private String rawRequest;
     private String uri;
     private HttpMethod method;
     private Map<String, String> parameters;
     private Map<String, String> headers;
     private String body;
-    private static final String CRLF = "\r\n";
     private String sessionId;
-    private static final String SESSIONID = "SESSIONID";
-
-    private static final Logger logger = LoggerFactory.getLogger(HttpRequest.class);
 
     public String getRouteKey() {
         return String.format("%s %s", method, uri);
@@ -56,15 +56,15 @@ public class HttpRequest {
     }
 
     public HttpRequest(String rawRequest) {
-        this.headers = new HashMap<>();
         this.rawRequest = rawRequest;
+        this.sessionManager = SessionManager.getInstance();
+        this.headers = new HashMap<>();
         this.parseRequestLine();
         this.tryToParseBody();
-        this.sessionId = new SessionManager(getHeader("Cookie")).getSessionId();
-        logger.info("sessionIdUUID is {}", this.sessionId);
+        this.initSessionId();
 
         logger.debug("\nall-rawRequest\n{}", rawRequest);
-        logger.trace("{} {}\nParameters: {}\nBody: {}", method, uri, parameters, body); // TODO правильно все поназывать
+        logger.trace("{} {}\nParameters: {}\nBody: {}", method, uri, parameters, body);
     }
 
     public void tryToParseBody() {
@@ -119,5 +119,15 @@ public class HttpRequest {
             headerEnd += 2;
         } while (headerEnd != rawRequest.indexOf(CRLF, headerEnd));
     }
+
+    private void initSessionId() {
+        String cookieHeader = headers.get("Cookie");
+        if (cookieHeader != null) {
+            sessionManager.setCookies(cookieHeader);
+            this.sessionId = sessionManager.getSessionId();
+        }
+        logger.info("sessionIdUUID is {}", this.sessionId);
+    }
 }
+
 

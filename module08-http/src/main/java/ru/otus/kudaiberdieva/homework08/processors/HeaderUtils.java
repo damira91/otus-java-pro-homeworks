@@ -12,9 +12,11 @@ public class HeaderUtils {
         String acceptHeader = request.getHeader("Accept");
         logger.info("Accept Header: {}", acceptHeader);
         logger.info("Expected Type: {}", expectedType);
-        if (acceptHeader == null) {
-            return false;
+
+        if (acceptHeader == null || acceptHeader.trim().isEmpty()) {
+            return true;
         }
+
         return acceptHeader.contains("*/*") || acceptHeader.contains(expectedType);
     }
 }

@@ -11,7 +11,9 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class Dispatcher {
@@ -21,6 +23,7 @@ public class Dispatcher {
     private RequestProcessor staticResourcesProcessor;
     private RequestProcessor notAcceptableProcessor;
     private RequestProcessor methodNotAllowedProcessor;
+    private HashSet<String> setUri;
     private final CacheManager cacheManager;
     private static final Logger logger = LoggerFactory.getLogger(Dispatcher.class.getName());
 
@@ -30,7 +33,7 @@ public class Dispatcher {
         this.router.put("GET /hello", new HelloWorldRequestProcessor());
         this.router.put("GET /items", new GetAllProductsProcessor());
         this.router.put("POST /items", new CreateNewProductProcessor());
-
+        setUri = new HashSet<>(Arrays.asList("/calc", "/hello", "/items"));
 
         this.unknownOperationRequestProcessor = new DefaultUnknownOperationProcessor();
         this.optionsRequestProcessor = new DefaultOptionsProcessor();
@@ -64,20 +67,10 @@ public class Dispatcher {
             return;
         }
 
-        RequestProcessor processor = router.get(httpRequest.getRouteKey());
-        if (processor instanceof RequestProcessorHeaderType) {
-            String expectedType = ((RequestProcessorHeaderType) processor).headerType();
-            if (!HeaderUtils.isValidAcceptHeader(httpRequest, expectedType)) {
-                notAcceptableProcessor.execute(httpRequest, outputStream);
-                return;
-            }
-        }
-
         if (!router.containsKey(httpRequest.getRouteKey())) {
-            long count = router.keySet().stream()
-                    .filter(route -> route.endsWith(httpRequest.getUri()))
-                    .count();
-            if (count > 0) {
+            String[] elements = httpRequest.getRouteKey().trim().split(" ");
+            if (elements.length > 1) uri = elements[1];
+            if (setUri.contains(uri)) {
                 methodNotAllowedProcessor.execute(httpRequest, outputStream);
             } else {
                 unknownOperationRequestProcessor.execute(httpRequest, outputStream);
@@ -85,8 +78,18 @@ public class Dispatcher {
             return;
         }
 
+        RequestProcessor processor = router.get(httpRequest.getRouteKey());
+        if (processor instanceof RequestProcessor) {
+            String expectedType = processor.headerType();
+            if (!HeaderUtils.isValidAcceptHeader(httpRequest, expectedType)) {
+                notAcceptableProcessor.execute(httpRequest, outputStream);
+                return;
+            }
+        }
+
         router.get(httpRequest.getRouteKey()).execute(httpRequest, outputStream);
     }
+
 
     private void serveStaticResource(HttpRequest httpRequest, OutputStream outputStream) throws IOException {
         String uri = httpRequest.getUri();

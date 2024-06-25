@@ -5,20 +5,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.kudaiberdieva.homework08.HttpRequest;
 import ru.otus.kudaiberdieva.homework08.processors.RequestProcessor;
-import ru.otus.kudaiberdieva.homework08.processors.RequestProcessorHeaderType;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
-public class CalculatorRequestProcessor implements RequestProcessor, RequestProcessorHeaderType {
+public class CalculatorRequestProcessor implements RequestProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(CalculatorRequestProcessor.class);
 
     @Override
     public void execute(HttpRequest httpRequest, OutputStream output) throws IOException {
-        String cookie = "\r\nSet-Cookie: SESSIONID=" + httpRequest.getSessionId();
-        logger.info("cookie {}", cookie);
+        String sessionId = httpRequest.getSessionId();
+        String cookie = "";
+        if (sessionId == null || sessionId.isEmpty()) {
+            sessionId = UUID.randomUUID().toString();
+            cookie = "Set-Cookie: SESSIONID=" + sessionId + "\r\n";
+            logger.info("Generated new session ID: {}", sessionId);
+        } else {
+            logger.info("Existing session ID: {}", sessionId);
+        }
         int a = Integer.parseInt(httpRequest.getParameter("a"));
         int b = Integer.parseInt(httpRequest.getParameter("b"));
         int result = a + b;

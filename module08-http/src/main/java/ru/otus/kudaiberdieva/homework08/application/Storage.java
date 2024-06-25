@@ -30,5 +30,3 @@ public class Storage {
         items.add(item);
     }
 }
-
-
