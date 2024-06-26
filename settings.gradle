@@ -1,2 +1,3 @@
 rootProject.name = 'otus-java-pro-homework'
+include 'module09-web-server-jee'
 
