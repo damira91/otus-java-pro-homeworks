@@ -5,6 +5,7 @@ import ru.otus.kudaiberdieva.homework10.application.repository.ProductRepository
 
 
 public class ShopServiceImpl implements ShopService {
+
     private final ProductRepository productRepository;
     private final IOService ioService;
     private final Cart cart;

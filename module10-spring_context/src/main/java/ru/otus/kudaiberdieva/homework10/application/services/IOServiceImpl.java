@@ -1,14 +1,18 @@
 package ru.otus.kudaiberdieva.homework10.application.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Scanner;
 
 public class IOServiceImpl implements IOService {
+    private static final Logger logger = LoggerFactory.getLogger(ShopServiceImpl.class);
 
     private final Scanner scanner = new Scanner(System.in);
 
     @Override
     public void print(String message) {
-        System.out.println(message);
+        logger.info(message);
     }
 
     @Override

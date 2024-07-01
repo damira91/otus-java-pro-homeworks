@@ -15,25 +15,15 @@ public class Product {
         return id;
     }
 
-    public void setId(){
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(){
-        this.title = title;
     }
 
     public double getPrice() {
         return price;
     }
 
-    public void setPrice() {
-        this.price = price;
-    }
     @Override
     public String toString() {
         return "Product{" +
