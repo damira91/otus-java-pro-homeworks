@@ -24,7 +24,7 @@ public class Customer {
             joinColumns = @JoinColumn(name = "customer_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private Set<Product> products = new HashSet<>();
+    private Set<Product> products;
 
     public Customer(String name) {
         this.name = name;
@@ -32,6 +32,6 @@ public class Customer {
 
     public Customer(String name, Set<Product> products) {
         this.name = name;
-        this.products = products;
+        this.products = products != null ? products : new HashSet<>();
     }
 }

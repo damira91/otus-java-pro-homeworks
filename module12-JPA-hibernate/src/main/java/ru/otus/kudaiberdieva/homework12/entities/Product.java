@@ -22,18 +22,19 @@ public class Product {
 
     private Double price;
 
-    @ManyToMany(mappedBy = "products", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
 
     private Set<Customer> customers = new HashSet<>();
 
     public Product(String title, Double price, Set<Customer> customers) {
         this.title = title;
         this.price = price;
-        this.customers.addAll(customers);
+        if (customers != null) {
+            this.customers.addAll(customers);
+        }
     }
 
     public Product(String title, Double price) {
-        this.title = title;
-        this.price = price;
+        this(title, price, new HashSet<>());
     }
 }

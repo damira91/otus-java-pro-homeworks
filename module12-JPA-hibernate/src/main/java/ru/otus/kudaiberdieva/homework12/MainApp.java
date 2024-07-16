@@ -15,9 +15,7 @@ public class MainApp {
 
     public static void main(String[] args) {
 
-        sessionFactory = SessionFactoryConfiguration.getSessionFactory();
-
-        SessionFactoryConfiguration.init(sessionFactory);
+        sessionFactory = SessionFactoryConfiguration.init();
 
         logger.info("All customers:");
         EntityUtil.findAll(sessionFactory, Customer.class).forEach(customer -> logger.info(customer.toString()));
@@ -34,7 +32,8 @@ public class MainApp {
 
         EntityUtil.deleteEntityById(Product.class, id2);
         logger.info("Product with id: {} deleted", id2);
-
-        sessionFactory.close();
+        if (sessionFactory != null) {
+            sessionFactory.close();
+        }
     }
 }

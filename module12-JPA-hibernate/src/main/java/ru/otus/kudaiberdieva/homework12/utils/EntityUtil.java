@@ -13,7 +13,15 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EntityUtil {
-    private static final SessionFactory sessionFactory = SessionFactoryConfiguration.getSessionFactory();
+    private static SessionFactory sessionFactory;
+
+    static {
+        try {
+            sessionFactory = SessionFactoryConfiguration.init();
+        } catch (Exception e) {
+            throw new ExceptionInInitializerError("Initial SessionFactory creation failed: " + e);
+        }
+    }
 
     public static <T> T insert(SessionFactory sessionFactory, T entity) {
         try (Session session = sessionFactory.getCurrentSession()) {
@@ -24,34 +32,50 @@ public class EntityUtil {
             return merged;
         }
     }
+
     public static <T> T findById(SessionFactory sessionFactory, Class<T> cls, long id) {
-        try (Session session = sessionFactory.getCurrentSession()) {
+        Session session = sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
-            return session.get(cls, id);
+            T entity = session.get(cls, id);
+            session.getTransaction().commit();
+            return entity;
+        } finally {
+            session.close();
         }
     }
 
 
     public static <T> List<T> findAll(SessionFactory sessionFactory, Class<T> cls) {
-        try (Session session = sessionFactory.getCurrentSession()) {
+        Session session = sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
-            return session.createQuery("SELECT a FROM " + cls.getSimpleName() + " a", cls)
+            List<T> entities = session.createQuery("SELECT a FROM " + cls.getSimpleName() + " a", cls)
                     .getResultList();
+            session.getTransaction().commit();
+            return entities;
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            session.close();
         }
     }
 
     public static <T> void deleteEntityById(Class<T> entityClass, Long entityId) {
-        try (Session session = sessionFactory.getCurrentSession()) {
+        Session session = sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
-
             T entity = session.get(entityClass, entityId);
             if (entity != null) {
                 session.remove(entity);
             } else {
                 throw new IllegalArgumentException("Entity with id " + entityId + " not found for class " + entityClass.getName());
             }
-
             session.getTransaction().commit();
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            session.close();
         }
     }
 }
