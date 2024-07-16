@@ -29,4 +29,8 @@ public class Client {
     public Client(String name) {
         this.name = name;
     }
+    public void addPhone(Phone phone){
+            phone.setClient(this);
+            phones.add(phone);
+    }
 }
