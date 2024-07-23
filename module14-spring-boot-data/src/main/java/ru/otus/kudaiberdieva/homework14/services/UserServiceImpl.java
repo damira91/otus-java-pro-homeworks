@@ -24,7 +24,8 @@ public class UserServiceImpl implements UserService {
                         .id(user.getId())
                         .name(user.getName())
                         .email(user.getEmail())
-                        .phone(user.getPhone()).build()).toList();
+                        .phone(user.getPhone()).build())
+                .toList();
     }
 
     @Override
@@ -37,8 +38,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void createUser(UserDTO userdto) {
-        userRepo.save(User.builder().name(userdto.getName()).email(userdto.getEmail()).phone(userdto.getPhone()).build());
+    public void createUser(UserDTO userDTO) {
+        userRepo.save(User.builder().name(userDTO.getName()).email(userDTO.getEmail()).phone(userDTO.getPhone()).build());
     }
 
     @Override
