@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  #activemq
+  activemq:
+    image: rmohr/activemq:latest
+    container_name: 'activemq-container'
+    restart: always  # ???
+    #  mapping port
+    ports:
+      - "61616:61616"
+      - "8161:8161"
+    #definition mount point
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  #?
+      - ./data/data/activemq:/data/activemq #?
+      - ./data/var/log/activemq:/var/log/activemq #?
+      - ~/Documents/data/activemq/data:/data/activemq
+      - ~/Documents/data/activemq/log:/var/log/activemq
+    #  - ./activeMQ/data:/usr/local/apache-activemq-5.12.1/data
+    environment:
+      - ACTIVEMQ_DISALLOW_WEBCONSOLE=false
+      - ACTIVEMQ_USERNAME=admin
+      - ACTIVEMQ_PASSWORD=admin
+      - ACTIVEMQ_WEBADMIN_USERNAME=admin
+      - ACTIVEMQ_WEBADMIN_PASSWORD=admin
+      - ACTIVEMQ_CONFIG_MINMEMORY=512
+      - ACTIVEMQ_CONFIG_MAXMEMORY=2048
